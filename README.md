@@ -61,6 +61,26 @@ NEO4J_USER=your username
 NEO4J_PASSWORD=your password
 ```
 
+还需要将微博的cookies填入cookies.json文件中：
+
+```json
+{
+  "SINAGLOBAL": "",
+  "UOR": "",
+  "SCF": "",
+  "XSRF-TOKEN": "",
+  "SUB": "",
+  "SUBP": "",
+  "ALF": "",
+  "_s_tentry": "",
+  "Apache": "",
+  "ULV": "",
+  "WBPSESS": ""
+}
+```
+
+请将从浏览器中获取的微博cookies填入对应字段。
+
 ### 3. 运行爬虫
 
 使用以下命令运行爬虫：
@@ -78,6 +98,36 @@ python main.py -e xxxxxx
 - 可以通过-h参数查看更多选项说明
 
 ## 数据模型
+
+```mermaid
+classDiagram
+    class User {
+        +int id
+        +str location
+        +str screen_name
+        +int followers_count
+        +int friends_count
+        +str description
+        +Literal["m", "f"] gender
+    }
+    
+    class Post {
+        +int id
+        +str text_raw
+        +str created_at
+    }
+    
+    class Comment {
+        +int id
+        +str text_raw
+        +str source
+        +str created_at
+    }
+
+    User --> Post: publishes
+    User --> Comment: writes
+    Comment --> Post: belongs to
+```
 
 Neo4j图数据库中的节点和关系设计如下：
 
