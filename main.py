@@ -1,7 +1,7 @@
 import logging
 from argparse import ArgumentParser
 from asyncio import Queue, Runner, sleep
-from functools import cache
+from asyncstdlib.functools import cache
 from os import getenv
 
 from aiohttp import ClientSession
