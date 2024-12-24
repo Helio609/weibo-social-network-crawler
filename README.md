@@ -2,6 +2,9 @@
 
 这是一个基于Python的微博社交网络爬虫项目，可以从指定的微博帖子开始，递归抓取其互动关系网络，并将数据存储到Neo4j图数据库中。
 
+![Summary](images/summary.png)
+![Details](images/details.png)
+
 ## 功能特点
 
 - 从指定微博ID开始递归抓取社交网络
