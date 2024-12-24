@@ -51,7 +51,7 @@ def extract_comment(data) -> Comment:
     return comment
 
 
-async def get_reposts(session: ClientSession, id: str) -> list[tuple[User, Post]]:
+async def get_reposts(session: ClientSession, id: str) -> list[tuple[str, User, Post]]:
     page = 1
     count = 0
     reposts = []
@@ -70,7 +70,7 @@ async def get_reposts(session: ClientSession, id: str) -> list[tuple[User, Post]
         for item in data["data"]:
             try:
                 post = await get_post(session, item["mblogid"])
-                reposts.append(post)
+                reposts.append((item["mblogid"], *post))
             except Exception as e:
                 logging.error(e)
 
@@ -212,11 +212,11 @@ async def entry(session: ClientSession, graph: WeiboGraph, id: str, entriesq: Qu
 
     # Process the reposts
     reports = await get_reposts(session, post.id)
-    for user, report in reports:
+    for mblogid, user, report in reports:
         await graph.create_user(user)
         await graph.create_post(report, user.id)
         await graph.create_repost_relationship(user.id, report.id, post.id)
-        await entriesq.put(report.id)
+        await entriesq.put(mblogid)
 
     # Process the attitudes
     users = await get_attitudes(session, post.id)
